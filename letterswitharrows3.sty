@@ -120,23 +120,28 @@
         }
     }
     {
-        \cs_new_protected:cpx {v\int_to_alph:n{#1}} {
+        \cs_new:cpx {v\int_to_alph:n{#1}} {
             \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
         }
-        \cs_new_protected:cpx {\int_to_alph:n{#1}v} {
+        \cs_new:cpx {\int_to_alph:n{#1}v} {
             \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
         }
     }
-    \cs_new_protected:cpx {v\int_to_Alph:n{#1}} {
+    \cs_new:cpx {v\int_to_Alph:n{#1}} {
         \exp_not:N\@@_arrow_overset:w{\int_to_Alph:n{#1}}
     }
-    \cs_new_protected:cpx {\int_to_Alph:n{#1}v} {
+    \cs_new:cpx {\int_to_Alph:n{#1}v} {
         \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{#1}}
     }
-    \cs_new_protected:cpx {vc\int_to_Alph:n{#1}} {
+    \cs_new:cpx {vc\int_to_Alph:n{#1}} {
       \exp_not:N\@@_arrow_overset:w{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
-    \cs_new_protected:cpx {c\int_to_Alph:n{#1}v} {
+    \cs_new:cpx {c\int_to_Alph:n{#1}v} {
         \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
+}
+
+%% ADJUSTMENTS
+\cs_set:cpn {vS} {
+  \@@_arrow_overset:w{S}[3mu][0ex][8/10]
 }
