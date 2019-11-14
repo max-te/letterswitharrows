@@ -6,9 +6,11 @@
 
 %<@@=jmt_letterswitharrows>
 \msg_new:nnn {@@} {pdf-only} {Only~pdf~output~is~supported.}
-\ifpdf\else
-  \msg_warning:nn {@@} {pdf-only}
-\fi
+\AtBeginDocument{
+  \sys_if_output_pdf:F {
+    \msg_warning:nn {@@} {pdf-only}
+  }
+}
 
 \cs_new:Nn \__@@_arrow_draw:nn % length, scale factor
 {
@@ -108,16 +110,18 @@
     \c_group_end_token
 }
 
-\@ifpackageloaded{hyperref}{
-  \pdfstringdefDisableCommands{
-    % Why does this only work with Expandable?
-    \DeclareExpandableDocumentCommand \@@_arrow_overset:w {s o o o m} {
-    \ifpdfstringunicode
-      {#5 \IfBooleanTF{#1}{\unichar{"20D6}}{\unichar{"20D7}}}
-      {#5}
+\AtBeginDocument{
+  \@ifpackageloaded{hyperref}{
+    \pdfstringdefDisableCommands{
+      % Why does this only work with Expandable?
+      \DeclareExpandableDocumentCommand \@@_arrow_overset:w {s o o o m} {
+      \ifpdfstringunicode
+        {#5 \IfBooleanTF{#1}{\unichar{"20D6}}{\unichar{"20D7}}}
+        {#5}
+      }
     }
-  }
-}{}
+  }{}
+}
 
 \int_step_inline:nnn {1} {26}
 {
