@@ -1,9 +1,14 @@
 %% letterswitharrows3.dtx
 
-\RequirePackage{expl3,xparse}
+\RequirePackage{expl3,xparse,ifpdf,mathtools}
 \ExplSyntaxOn
 
 %<@@=jmt_letterswitharrows>
+\msg_new:nnn {@@} {pdf-only} {Only~pdf~output~is~supported.}
+\ifpdf\else
+  \msg_warning:nn {@@} {pdf-only}
+\fi
+
 \cs_new:Nn \__@@_arrow_draw:nn % length, scale factor
 {
     \sys_if_output_pdf:TF {
@@ -26,18 +31,20 @@
           Q
         }
     } {
-        \msg_warning:nn{@@}{This~package~currently~only~supports~pdf~output}
+    % \msg_warning:nn{@@}{pdf-only}
     }
 }
 \cs_new:Nn \__@@_arrow_right:nn
 {
     \hspace{#1}
+    % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
     \__@@_arrow_draw:nn {#1} {#2}
 }
 \cs_new:Nn \__@@_arrow_left:nn
 {
     \__@@_arrow_draw:nn {\dim_eval:n{-#1}} {-#2}
     \hspace{#1}
+    % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
 }
 
 \cs_new:Nn \__@@_arrow_overset_style:Nnnnnnn
@@ -48,9 +55,9 @@
     \vbox {
         \lineskiplimit=\maxdimen
         \baselineskip=0pt
-        \lineskip=\dim_eval:n {\l_tmpa_dim + #6}
+        \lineskip=\dim_eval:n {\l_tmpa_dim * 3/2 + #6}
         \halign { ## \cr
-            \hspace{\dim_use:N \l_tmpa_dim}
+            \hspace{\dim_eval:n{\l_tmpa_dim / 2}}
             \m@th$#1
             \mskip\muskip_eval:n {#5}
             \use:c{#4}{\dim_eval:n{\box_wd:N \l_tmpa_box * #7}}{\dim_to_decimal:n {\l_tmpa_dim}}
@@ -69,44 +76,67 @@
         {\__@@_arrow_overset_style:Nnnnnnn \scriptstyle {.8} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
         {\__@@_arrow_overset_style:Nnnnnnn \scriptscriptstyle {.6} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
 }
+
 \cs_new:Nn \__@@_arrow_overset:nn
 {
     \__@@_arrow_overset:nnnnn {#1} {#2} {0mu} {0ex} {1}
 }
 
+\cs_new_protected:Npn \@@_arrow_overset:w {
+  \c_group_begin_token
+  \__@@_arrow_overset:w
+}
+\exp_args:NNx \NewDocumentCommand \__@@_arrow_overset:w {s m O{0mu} O{0ex} O{1} t' e{\char_generate:nn {95}{8}} t'} {
+  \__@@_arrow_overset:nnnnn 
+    {
+      #2^{\scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}} % TODO: Better positioning?
+      \exp_args:Nf\IfValueT{\use:n#7} {
+        \c_math_subscript_token
+        {
+          \mathrlap{#7}
+        }
+      }
+    }
+    {\IfBooleanTF{#1}{left}{right}} {#3} {#4} {#5}
+
+    \exp_args:Nf\IfValueTF{\use:n#7}{ % TODO: Better way to do this? This is all kinds of wrong.
+      \hphantom{#7}
+    }{
+      %\mkern2.5mu
+    }
+    \c_group_end_token
+}
+
+
 \int_step_inline:nnn {1} {26}
 {
     \int_compare:nNnTF {#1} = {22}
     {
-        \cs_new_protected:cpx {\int_to_alph:n{#1}right} {
-            \exp_not:N\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{right}
+        \cs_new:cpx {\int_to_alph:n{#1}right} {
+          \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
         }
-        \cs_new_protected:cpx {\int_to_alph:n{#1}left} {
-            \exp_not:N\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{left}
+        \cs_new:cpx {\int_to_alph:n{#1}left} {
+            \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
         }
     }
     {
         \cs_new_protected:cpx {v\int_to_alph:n{#1}} {
-            \c_group_begin_token
-            \mathord {
-                \exp_not:N\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{right}
-            }
-            \c_group_end_token
+            \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
         }
         \cs_new_protected:cpx {\int_to_alph:n{#1}v} {
-            \exp_not:N\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{left}
+            \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
         }
     }
     \cs_new_protected:cpx {v\int_to_Alph:n{#1}} {
-        \exp_not:N\__@@_arrow_overset:nn{\int_to_Alph:n{#1}}{right}
+        \exp_not:N\@@_arrow_overset:w{\int_to_Alph:n{#1}}
     }
     \cs_new_protected:cpx {\int_to_Alph:n{#1}v} {
-        \exp_not:N\__@@_arrow_overset:nn{\int_to_Alph:n{#1}}{left}
+        \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{#1}}
     }
     \cs_new_protected:cpx {vc\int_to_Alph:n{#1}} {
-        \exp_not:N\__@@_arrow_overset:nn{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}{right}
+      \exp_not:N\@@_arrow_overset:w{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
     \cs_new_protected:cpx {c\int_to_Alph:n{#1}v} {
-        \exp_not:N\__@@_arrow_overset:nn{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}{left}
+        \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
 }
