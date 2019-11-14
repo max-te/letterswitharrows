@@ -1,0 +1,94 @@
+%% letterswitharrows3.dtx
+
+\RequirePackage{expl3,xparse}
+\ExplSyntaxOn
+%<@@=jmt_letterswitharrows>
+\cs_new:Nn \__@@_arrow_draw:nn % length, scale factor
+{
+    \special{pdf:~
+          q~
+          1~J~1~j~
+          1~0~0~#2~0~0~cm~
+          .25~w~
+          q~
+          #2~0~0~1~0~0~cm~
+          1~0~0~1~-1~0~cm~
+          0~1~m~
+          .25~0~1~0~1~0~c~
+          1~0~.25~0~0~-1~c~
+          S~
+          Q~
+          0~0~m~
+          -1~0~0~1~0~0~cm~
+          \dim_to_decimal:n{#1}~0~l~S~
+          Q
+    }
+}
+\cs_new:Nn \__@@_arrow_right:nn
+{
+    \hspace{#1}
+    \__@@_arrow_draw:nn {#1} {#2}
+}
+\cs_new:Nn \__@@_arrow_left:nn
+{
+    \__@@_arrow_draw:nn {\dim_eval:n{-#1}} {-#2}
+    \hspace{#1}
+}
+
+\cs_new:Nn \__@@_arrow_overset_style:Nnnn
+{
+    \hbox_set:Nn \l_tmpa_box {$\m@th#1#3$}
+    % \dim_set:Nn \l_tmpa_dim {#2pt*\f@size/10} % Why doesn't this work?
+    \dim_set:Nn \l_tmpa_dim {\fp_to_dim:n {#2pt*\f@size/10}}
+    \vbox {
+        \lineskiplimit=\maxdimen
+        \baselineskip=0pt
+        \lineskip=\dim_use:N \l_tmpa_dim
+        \halign { ## \cr
+            \hspace{\dim_use:N \l_tmpa_dim}
+            \use:c{#4}{\box_wd:N \l_tmpa_box}{\dim_to_decimal:n {\dim_use:N \l_tmpa_dim}}
+            \cr
+            \box_use_drop:N \l_tmpa_box
+            \cr
+        }
+    }
+}
+\cs_new:Nn \__@@_arrow_overset:nn
+{
+    \mathchoice
+        {\__@@_arrow_overset_style:Nnnn \displaystyle 1 {#1} {__@@_arrow_#2:nn}}
+        {\__@@_arrow_overset_style:Nnnn \textstyle 1 {#1} {__@@_arrow_#2:nn}}
+        {\__@@_arrow_overset_style:Nnnn \scriptstyle {.8} {#1} {__@@_arrow_#2:nn}}
+        {\__@@_arrow_overset_style:Nnnn \scriptscriptstyle {.6} {#1} {__@@_arrow_#2:nn}}
+}
+
+\int_step_inline:nnn {1} {26}
+{
+    \int_compare:nNnTF {#1} = {22}
+    {
+        \cs_new_protected:cpx {\int_to_alph:n{#1}right} {
+            \noexpand\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{right}
+        }
+        \cs_new_protected:cpx {\int_to_alph:n{#1}left} {
+            \noexpand\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{left}
+        }
+    }
+    {
+        \cs_new_protected:cpx {v\int_to_alph:n{#1}} {
+            \c_group_begin_token
+            \mathord {
+                \noexpand\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{right}
+            }
+            \c_group_end_token
+        }
+        \cs_new_protected:cpx {\int_to_alph:n{#1}v} {
+            \noexpand\__@@_arrow_overset:nn{\int_to_alph:n{#1}}{left}
+        }
+    }
+    \cs_new_protected:cpx {v\int_to_Alph:n{#1}} {
+        \noexpand\__@@_arrow_overset:nn{\int_to_Alph:n{#1}}{right}
+    }
+    \cs_new_protected:cpx {\int_to_Alph:n{#1}v} {
+        \noexpand\__@@_arrow_overset:nn{\int_to_Alph:n{#1}}{left}
+    }
+}
