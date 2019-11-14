@@ -103,4 +103,10 @@
     \cs_new_protected:cpx {\int_to_Alph:n{#1}v} {
         \exp_not:N\__@@_arrow_overset:nn{\int_to_Alph:n{#1}}{left}
     }
+    \cs_new_protected:cpx {vc\int_to_Alph:n{#1}} {
+        \exp_not:N\__@@_arrow_overset:nn{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}{right}
+    }
+    \cs_new_protected:cpx {c\int_to_Alph:n{#1}v} {
+        \exp_not:N\__@@_arrow_overset:nn{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}{left}
+    }
 }
