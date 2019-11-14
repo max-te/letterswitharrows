@@ -2,7 +2,6 @@
 \ProvidesExplPackage {letterswitharrows3} {2019-11-14} {2.9.9a} {TODO}
 
 \RequirePackage{expl3,xparse,ifpdf,mathtools}
-\ExplSyntaxOn
 
 %<@@=jmt_letterswitharrows>
 \msg_new:nnn {@@} {pdf-only} {Only~pdf~output~is~supported.}
@@ -34,6 +33,22 @@
           Q
         }
     } {
+      \special{"~
+          1~setlinecap~1~setlinejoin~
+          1~0~0~#2~0~0~6~array~astore~concat~
+          .3~setlinewidth~
+          gsave~
+          #2~0~0~1~0~0~6~array~astore~concat~
+          1~0~0~1~-1~0~6~array~astore~concat~
+          0~1~moveto~
+          .25~0~1~0~1~0~curveto~
+          1~0~.25~0~0~-1~curveto~
+          stroke~
+          grestore~
+          0~0~moveto~
+          -1~0~0~1~0~0~6~array~astore~concat~
+          \dim_to_decimal:n{#1}~0~lineto~stroke~
+      }
     % \msg_warning:nn{@@}{pdf-only}
     }
 }
@@ -54,7 +69,7 @@
 {
     \hbox_set:Nn \l_tmpa_box {$\m@th#1#3$}
     % \dim_set:Nn \l_tmpa_dim {#2pt*\f@size/10} % Why doesn't this work?
-    \dim_set:Nn \l_tmpa_dim {\fp_to_dim:n {#2pt*\f@size/10}}
+    \dim_set:Nn \l_tmpa_dim {\fp_to_dim:n {#2}}
     \vbox {
         \lineskiplimit=\maxdimen
         \baselineskip=0pt
@@ -74,10 +89,10 @@
 \cs_new:Nn \__@@_arrow_overset:nnnnn % content, direction, xoffset, yoffset, scale
 {
     \mathchoice
-        {\__@@_arrow_overset_style:Nnnnnnn \displaystyle 1 {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
-        {\__@@_arrow_overset_style:Nnnnnnn \textstyle 1 {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
-        {\__@@_arrow_overset_style:Nnnnnnn \scriptstyle {.8} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
-        {\__@@_arrow_overset_style:Nnnnnnn \scriptscriptstyle {.6} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
+    {\__@@_arrow_overset_style:Nnnnnnn \displaystyle {\tf@size/10} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
+    {\__@@_arrow_overset_style:Nnnnnnn \textstyle {\tf@size/10} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
+    {\__@@_arrow_overset_style:Nnnnnnn \scriptstyle {\sf@size/10} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
+        {\__@@_arrow_overset_style:Nnnnnnn \scriptscriptstyle {\ssf@size/10} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
 }
 
 \cs_new:Nn \__@@_arrow_overset:nn
