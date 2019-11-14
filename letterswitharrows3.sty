@@ -1,6 +1,6 @@
 %% letterswitharrows3.dtx
 
-\RequirePackage{expl3,xparse,ifpdf,mathtools}
+\RequirePackage{expl3,xparse,ifpdf,mathtools,xcolor}
 \ExplSyntaxOn
 
 %<@@=jmt_letterswitharrows>
@@ -100,7 +100,7 @@
     {\IfBooleanTF{#1}{left}{right}} {#3} {#4} {#5}
 
     \exp_args:Nf\IfValueTF{\use:n#7}{ % TODO: Better way to do this? This is all kinds of wrong.
-      \hphantom{#7}
+      \hphantom{\!\c_math_subscript_token{#7}}
     }{
       %\mkern2.5mu
     }
