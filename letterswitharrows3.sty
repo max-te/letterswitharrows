@@ -1,6 +1,7 @@
 %% letterswitharrows3.dtx
+\ProvidesExplPackage {letterswitharrows3} {2019-11-14} {2.9.9a} {TODO}
 
-\RequirePackage{expl3,xparse,ifpdf,mathtools,xcolor}
+\RequirePackage{expl3,xparse,ifpdf,mathtools}
 \ExplSyntaxOn
 
 %<@@=jmt_letterswitharrows>
@@ -86,10 +87,10 @@
   \c_group_begin_token
   \__@@_arrow_overset:w
 }
-\exp_args:NNx \NewDocumentCommand \__@@_arrow_overset:w {s m O{0mu} O{0ex} O{1} t' e{\char_generate:nn {95}{8}} t'} {
+\exp_args:NNx \NewDocumentCommand \__@@_arrow_overset:w {s O{0mu} O{0ex} O{1} m t' e{\char_generate:nn {95}{8}} t'} {
   \__@@_arrow_overset:nnnnn 
     {
-      #2^{\scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}} % TODO: Better positioning?
+      #5^{\scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}} % TODO: Better positioning?
       \exp_args:Nf\IfValueT{\use:n#7} {
         \c_math_subscript_token
         {
@@ -97,7 +98,7 @@
         }
       }
     }
-    {\IfBooleanTF{#1}{left}{right}} {#3} {#4} {#5}
+    {\IfBooleanTF{#1}{left}{right}} {#2} {#3} {#4}
 
     \exp_args:Nf\IfValueTF{\use:n#7}{ % TODO: Better way to do this? This is all kinds of wrong.
       \hphantom{\!\c_math_subscript_token{#7}}
@@ -107,6 +108,16 @@
     \c_group_end_token
 }
 
+\@ifpackageloaded{hyperref}{
+  \pdfstringdefDisableCommands{
+    % Why does this only work with Expandable?
+    \DeclareExpandableDocumentCommand \@@_arrow_overset:w {s o o o m} {
+    \ifpdfstringunicode
+      {#5 \IfBooleanTF{#1}{\unichar{"20D6}}{\unichar{"20D7}}}
+      {#5}
+    }
+  }
+}{}
 
 \int_step_inline:nnn {1} {26}
 {
@@ -143,5 +154,5 @@
 
 %% ADJUSTMENTS
 \cs_set:cpn {vS} {
-  \@@_arrow_overset:w{S}[3mu][0ex][8/10]
+  \@@_arrow_overset:w[3mu][0ex][8/10]{S}
 }
