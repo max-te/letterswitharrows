@@ -160,6 +160,7 @@
 }
 
 \bool_new:N \g_@@_tweak_shortcuts_bool
+\prop_new:N \g_@@_selected_presets
 \keys_define:nn {letterswitharrows} {
   pgf .meta:n = {mode = pgf},
   mode .choice:,
@@ -174,7 +175,23 @@
   },
   tweaks .bool_set:N = \g_@@_tweak_shortcuts_bool,
   presets .multichoice:,
-  presets / abc .code:n = {
+  presets .code:n = {\prop_gclear:N \g_@@_selected_presets},
+  presets / abc .prop_gput:N = \g_@@_selected_presets,
+  presets / ABC .prop_gput:N = \g_@@_selected_presets,
+  presets / cAcBcC .prop_gput:N = \g_@@_selected_presets,
+  presets .initial:n = {abc, ABC, cAcBcC},
+  presets / vec-cev .code:n = {
+    \RenewDocumentCommand \vec {m} {
+      \@@_arrow_overset:w {##1} \relax
+    }
+    \DeclareDocumentCommand \cev {m} {
+      \@@_arrow_overset:w* {##1} \relax
+    }
+  }
+}
+\ProcessKeysPackageOptions{letterswitharrows}
+\prop_show:N \g_@@_selected_presets
+
     \int_step_inline:nnn {1} {26}
     {
         \int_compare:nNnTF {##1} = {22}
@@ -195,9 +212,7 @@
             }
         }
     }
-  },
-  presets / ABC .code:n = {
-    \int_step_inline:nnn {1} {26}
+  \int_step_inline:nnn {1} {26}
     {
         \cs_new:cpx {v\int_to_Alph:n{##1}} {
             \exp_not:N\@@_arrow_overset:w{\int_to_Alph:n{##1}}
@@ -206,8 +221,6 @@
             \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{##1}}
         }
     }
-  },
-  presets / cAcBcC .code:n = {
     \int_step_inline:nnn {1} {26}
     {
         \cs_new:cpx {vc\int_to_Alph:n{##1}} {
@@ -217,18 +230,6 @@
             \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{##1}}}
         }
     }
-  },
-  presets .default:n = {abc, ABC, cAcBcC},
-  presets / vec-cev .code:n = {
-    \RenewDocumentCommand \vec {m} {
-      \@@_arrow_overset:w {##1} \relax
-    }
-    \DeclareDocumentCommand \cev {m} {
-      \@@_arrow_overset:w* {##1} \relax
-    }
-  }
-}
-\ProcessKeysPackageOptions{letterswitharrows}
 
 %% ADJUSTMENTS
 \bool_if:NTF \g_@@_tweak_shortcuts_bool {
