@@ -1,26 +1,37 @@
 %% letterswitharrows3.dtx
 \ProvidesExplPackage {letterswitharrows} {2019-11-14} {2.9.9a} {TODO}
 
-\RequirePackage{expl3,xparse,ifpdf,mathtools}
-
 %<@@=jmt_letterswitharrows>
-\msg_new:nnn {@@} {pdf-only} {Only~pdf~output~is~supported.}
+\RequirePackage{expl3,xparse,l3keys2e,mathtools}
+\keys_define:nn {letterswitharrows} {
+  pgf .bool_set:N _@@_use_pgf
+}
+
+\RequirePackage{pgf}
+\ExplSyntaxOff\usepgflibrary{arrows.meta}\ExplSyntaxOn
+
+\msg_new:nnn {letterswitharrows} {pdf-only} {Only~pdf~output~is~supported.}
 \AtBeginDocument{
   \sys_if_output_pdf:F {
-    \msg_warning:nn {@@} {pdf-only}
+    \msg_warning:nn {letterswitharrows} {pdf-only}
   }
 }
 
-\cs_new:Nn \__@@_arrow_draw:nn % length, scale factor
+% Document option concept:
+% __@@_arrow_draw:nnn is set to one of several predefined functions or manually with a `mode' setting.
+% The built-in options are `pgf' and `special', the latter chooses the appropriate pdf or ps option at begindocument
+%
+
+\cs_new:Nn \__@@_arrow_draw_special:nnn % length, font size, sign
 {
     \sys_if_output_pdf:TF {
         \special{pdf:~
           q~
           1~J~1~j~
-          1~0~0~#2~0~0~cm~
+          1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~cm~
           .3~w~
           q~
-          #2~0~0~1~0~0~cm~
+          \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~cm~
           1~0~0~1~-1~0~cm~
           0~1~m~
           .25~0~1~0~1~0~c~
@@ -29,16 +40,16 @@
           Q~
           0~0~m~
           -1~0~0~1~0~0~cm~
-          \dim_to_decimal:n{#1}~0~l~S~
+          \dim_to_decimal:n{#3#1}~0~l~S~
           Q
         }
     } {
       \special{"~
           1~setlinecap~1~setlinejoin~
-          1~0~0~#2~0~0~6~array~astore~concat~
+          1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~6~array~astore~concat~
           .3~setlinewidth~
           gsave~
-          #2~0~0~1~0~0~6~array~astore~concat~
+          \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~6~array~astore~concat~
           1~0~0~1~-1~0~6~array~astore~concat~
           0~1~moveto~
           .25~0~1~0~1~0~curveto~
@@ -47,20 +58,37 @@
           grestore~
           0~0~moveto~
           -1~0~0~1~0~0~6~array~astore~concat~
-          \dim_to_decimal:n{#1}~0~lineto~stroke~
+          \dim_to_decimal:n{#3#1}~0~lineto~stroke
       }
-    % \msg_warning:nn{@@}{pdf-only}
     }
 }
+
+% \tl_new:N \g_@@_pgf_arrow_style_tl
+% \tl_set:Nn \g_@@_pgf_arrow_style_tl {Computer~Modern~Rightarrow[width=#2pt*2/10,length=#2pt/10,sharp]}
+\cs_new:Nn \__@@_arrow_draw_pgf:nnn {
+      \begin{pgfpicture}
+        \pgfsetlinewidth{#2pt/30}
+        \pgfsetarrowsstart{Computer~Modern~Rightarrow[width=#2pt*2/10,length=#2pt/10,sharp]}
+        % \pgfsetarrowsstart{\tl_use:N \g_@@_pgf_arrow_style_tl}
+        \pgfpathmoveto{\pgfpointorigin}
+        \pgfpathlineto{\pgfpoint{-#3#1}{0cm}}
+        \pgfusepath{stroke}
+        \pgfresetboundingbox
+      \end{pgfpicture}
+}
+
+\cs_new_eq:NN \__@@_arrow_draw:nnn \__@@_arrow_draw_special:nnn
+\cs_set_eq:NN \__@@_arrow_draw:nnn \__@@_arrow_draw_pgf:nnn
+
 \cs_new:Nn \__@@_arrow_right:nn
 {
     \hspace{#1}
-    % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
-    \__@@_arrow_draw:nn {#1} {#2}
+    %\rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
+    \__@@_arrow_draw:nnn {#1} {#2} {}
 }
 \cs_new:Nn \__@@_arrow_left:nn
 {
-    \__@@_arrow_draw:nn {\dim_eval:n{-#1}} {-#2}
+    \__@@_arrow_draw:nnn {#1} {#2} {-}
     \hspace{#1}
     % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
 }
@@ -77,7 +105,7 @@
             \hspace{\dim_eval:n{\l_tmpa_dim / 2}}
             \m@th$#1
             \mskip\muskip_eval:n {#5}
-            \use:c{#4}{\dim_eval:n{\box_wd:N \l_tmpa_box * #7}}{\dim_to_decimal:n {\l_tmpa_dim}}
+            \use:c{#4}{\dim_eval:n{\box_wd:N \l_tmpa_box * #7}}{#2}
             $
             \cr
             \box_use_drop:N \l_tmpa_box
@@ -168,6 +196,13 @@
     \cs_new:cpx {c\int_to_Alph:n{#1}v} {
         \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
+}
+
+\RenewDocumentCommand \vec {m} {
+  \@@_arrow_overset:w {#1} \relax
+}
+\NewDocumentCommand \cev {m} {
+  \@@_arrow_overset:w* {#1} \relax
 }
 
 %% ADJUSTMENTS
