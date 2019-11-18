@@ -100,12 +100,12 @@
     \vbox {
         \lineskiplimit=\maxdimen
         \baselineskip=0pt
-        \lineskip=\dim_eval:n {\l_tmpa_dim * 3/2 + #6}
+        \lineskip=\dim_eval:n {\l_tmpa_dim * 3/2 + #7}
         \halign { ## \cr
             \hspace{\dim_eval:n{\l_tmpa_dim / 2}}
             \m@th$#1
             \mskip\muskip_eval:n {#5}
-            \use:c{#4}{\dim_eval:n{\box_wd:N \l_tmpa_box * #7}}{#2}
+            \use:c{#4}{\dim_eval:n{\box_wd:N \l_tmpa_box * #6}}{#2}
             $
             \cr
             \box_use_drop:N \l_tmpa_box
@@ -113,7 +113,7 @@
         }
     }
 }
-\cs_new:Nn \__@@_arrow_overset:nnnnn % content, direction, xoffset, yoffset, scale
+\cs_new:Nn \__@@_arrow_overset:nnnnn % content, direction, xoffset, scale, yoffset
 {
     \mathchoice
     {\__@@_arrow_overset_style:Nnnnnnn \displaystyle {\tf@size} {#1} {__@@_arrow_#2:nn} {#3} {#4} {#5}}
@@ -131,7 +131,7 @@
   \c_group_begin_token
   \__@@_arrow_overset:w
 }
-\exp_args:NNx \NewDocumentCommand \__@@_arrow_overset:w {s O{0mu} O{0ex} O{1} m t' e{\char_generate:nn {95}{8}} t'} {
+\exp_args:NNx \NewDocumentCommand \__@@_arrow_overset:w {s O{0mu} O{1} O{0ex} m t' e{\char_generate:nn {95}{8}} t'} {
   \__@@_arrow_overset:nnnnn 
     {
       #5^{\scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}} % TODO: Better positioning?
@@ -207,5 +207,5 @@
 
 %% ADJUSTMENTS
 \cs_set:cpn {vS} {
-  \@@_arrow_overset:w[2mu][0ex][8/10]{S}
+  \@@_arrow_overset:w[2mu][8/10]{S}
 }
