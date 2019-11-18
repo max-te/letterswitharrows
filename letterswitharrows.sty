@@ -160,11 +160,9 @@
 }
 
 \bool_new:N \g_@@_tweak_shortcuts_bool
-\prop_new:N \g_@@_selected_presets
+\prop_new:N \g_@@_selected_presets_prop
 \keys_define:nn {letterswitharrows} {
-  pgf .meta:n = {mode = pgf},
   mode .choice:,
-  mode .default:n = {special},
   mode / special .code:n = {
     \cs_set_eq:NN \__@@_arrow_draw:nnn \__@@_arrow_draw_special:nnn
   },
@@ -173,67 +171,77 @@
     \ExplSyntaxOff\usepgflibrary{arrows.meta}\ExplSyntaxOn
     \cs_set_eq:NN \__@@_arrow_draw:nnn \__@@_arrow_draw_pgf:nnn
   },
-  tweaks .bool_set:N = \g_@@_tweak_shortcuts_bool,
-  presets .multichoice:,
-  presets .code:n = {\prop_gclear:N \g_@@_selected_presets},
-  presets / abc .prop_gput:N = \g_@@_selected_presets,
-  presets / ABC .prop_gput:N = \g_@@_selected_presets,
-  presets / cAcBcC .prop_gput:N = \g_@@_selected_presets,
+  mode .initial:n = {special},
+  pgf .meta:n = {mode = pgf},
+  presets .multichoices:nn = {abc, ABC, cAcBcC, cev-vec} {
+    \int_compare:nNnTF \l_keys_choice_int = 1 
+      {\prop_gclear:N \g_@@_selected_presets_prop} {}
+    \prop_gput:NVn \g_@@_selected_presets_prop \l_keys_choice_tl 1
+  },
   presets .initial:n = {abc, ABC, cAcBcC},
-  presets / vec-cev .code:n = {
-    \RenewDocumentCommand \vec {m} {
-      \@@_arrow_overset:w {##1} \relax
-    }
-    \DeclareDocumentCommand \cev {m} {
-      \@@_arrow_overset:w* {##1} \relax
-    }
-  }
+  tweaks .bool_set:N = \g_@@_tweak_shortcuts_bool,
+  tweaks .initial:n = {true},
 }
 \ProcessKeysPackageOptions{letterswitharrows}
-\prop_show:N \g_@@_selected_presets
-
+\prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
     \int_step_inline:nnn {1} {26}
     {
-        \int_compare:nNnTF {##1} = {22}
+        \int_compare:nNnTF {#1} = {22}
         {
-            \cs_new:cpx {\int_to_alph:n{##1}right} {
-              \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{##1}}
+            \cs_new:cpx {\int_to_alph:n{#1}right} {
+              \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
             }
-            \cs_new:cpx {\int_to_alph:n{##1}left} {
-                \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{##1}}
+            \cs_new:cpx {\int_to_alph:n{#1}left} {
+                \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
             }
         }
         {
-            \cs_new:cpx {v\int_to_alph:n{##1}} {
-                \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{##1}}
+            \cs_new:cpx {v\int_to_alph:n{#1}} {
+                \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
             }
-            \cs_new:cpx {\int_to_alph:n{##1}v} {
-                \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{##1}}
+            \cs_new:cpx {\int_to_alph:n{#1}v} {
+                \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
             }
         }
     }
+} {}
+\prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
   \int_step_inline:nnn {1} {26}
     {
-        \cs_new:cpx {v\int_to_Alph:n{##1}} {
-            \exp_not:N\@@_arrow_overset:w{\int_to_Alph:n{##1}}
+        \cs_new:cpx {v\int_to_Alph:n{#1}} {
+            \exp_not:N\@@_arrow_overset:w{\int_to_Alph:n{#1}}
         }
-        \cs_new:cpx {\int_to_Alph:n{##1}v} {
-            \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{##1}}
+        \cs_new:cpx {\int_to_Alph:n{#1}v} {
+            \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{#1}}
         }
     }
+} {}
+\prop_if_in:NnTF \g_@@_selected_presets_prop {cAcBcC} {
     \int_step_inline:nnn {1} {26}
     {
-        \cs_new:cpx {vc\int_to_Alph:n{##1}} {
-          \exp_not:N\@@_arrow_overset:w{\exp_not:N\mathcal{\int_to_Alph:n{##1}}}
+        \cs_new:cpx {vc\int_to_Alph:n{#1}} {
+          \exp_not:N\@@_arrow_overset:w{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
         }
-        \cs_new:cpx {c\int_to_Alph:n{##1}v} {
-            \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{##1}}}
+        \cs_new:cpx {c\int_to_Alph:n{#1}v} {
+            \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
         }
     }
+} {}
+\prop_if_in:NnTF \g_@@_selected_presets_prop {cAcBcC} {
+  \RenewDocumentCommand \vec {m} {
+      \@@_arrow_overset:w {#1} \relax
+    }
+    \DeclareDocumentCommand \cev {m} {
+      \@@_arrow_overset:w* {#1} \relax
+    }
+
+} {}
 
 %% ADJUSTMENTS
 \bool_if:NTF \g_@@_tweak_shortcuts_bool {
+\prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
   \cs_set:cpn {vS} {
     \@@_arrow_overset:w[2mu][8/10]{S}
   }
+} {}
 } {}
