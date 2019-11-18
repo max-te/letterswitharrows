@@ -161,7 +161,7 @@
 
 \bool_new:N \g_@@_tweak_shortcuts_bool
 \keys_define:nn {letterswitharrows} {
-  % pgf .meta:n = {mode = pgf},
+  pgf .meta:n = {mode = pgf},
   mode .choice:,
   mode .default:n = {special},
   mode / special .code:n = {
@@ -223,12 +223,11 @@
     \RenewDocumentCommand \vec {m} {
       \@@_arrow_overset:w {##1} \relax
     }
-    \NewDocumentCommand \cev {m} {
+    \DeclareDocumentCommand \cev {m} {
       \@@_arrow_overset:w* {##1} \relax
     }
   }
 }
-
 \ProcessKeysPackageOptions{letterswitharrows}
 
 %% ADJUSTMENTS
