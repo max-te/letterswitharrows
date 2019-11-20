@@ -147,7 +147,7 @@
 % \iffalse
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage {letterswitharrows} {2019/11/19} {3} {Draw arrows over math letters.}
+\ProvidesExplPackage {letterswitharrows} {2019/11/19} {} {Draw arrows over math letters.}
 \RequirePackage{expl3,xparse,l3keys2e,mathtools}
 % TODO: I just use mathtools for mathrlap; replace.
 %</package>
@@ -435,6 +435,14 @@
   \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
     \cs_set:cpn {vS} {
       \@@_arrow_overset:w[2mu][8/10]{S}
+    }
+  } {}
+  \prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
+    \cs_new:cpn {vell} {
+      \@@_arrow_overset:w{\ell}
+    }
+    \cs_new:cpn {ellv} {
+      \@@_arrow_overset:w{\ell}
     }
   } {}
 } {}
