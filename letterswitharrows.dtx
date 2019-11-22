@@ -40,8 +40,11 @@
 \documentclass[full]{l3doc}
 \usepackage[presets={abc,ABC,cAcBcC,vec-cev},tweaks=false]{letterswitharrows}
 \usepackage{amssymb}
+\usepackage{hyperref}
 \begin{document}
 \DocInput{\jobname.dtx}
+%% \PrintIndex
+\PrintChanges
 \end{document}
 %</driver>
 %<*gobble>
@@ -51,7 +54,7 @@
 
 % \title{The \pkg{letterswitharrows} package}
 % \author{Max Teegen\\ \href{mailto:tex@jmteegen.eu}{tex@jmteegen.eu}}
-% \date{2019/11/19}
+% \date{2019/11/21}
 
 % \maketitle
 
@@ -144,16 +147,14 @@
 % \begin{implementation}
 % \section{Implementation}
 
-% \iffalse
-%<*package>
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage {letterswitharrows} {2019-11-19} {} {Draw arrows over math letters.}
-\RequirePackage{expl3,xparse,l3keys2e,mathtools}
-% TODO: I just use mathtools for mathrlap; replace.
-%</package>
-% \fi
-
+% \changes{2019/11/21}{2019/11/21}{Require \pkg{expl3} before \tn{ProvidesExplPackage}.}
 %    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}
+\ProvidesExplPackage {letterswitharrows} {2019-11-21} {} {Draw arrows over math letters.}
+\RequirePackage{xparse,l3keys2e,mathtools}
+% TODO: I just use mathtools for mathrlap; replace.
+
 %<@@=jmt_lwa>
 \msg_new:nnn {letterswitharrows} {pdf-only} {Only~pdf~output~is~supported.}
 \AtBeginDocument{
