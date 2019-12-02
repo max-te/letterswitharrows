@@ -1,0 +1,12 @@
+*.pdf
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.glo
+*.hd
+*.idx
+*.ilg
+*.ind
+*.log
+*.out
