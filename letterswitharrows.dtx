@@ -433,19 +433,30 @@
 % Some personal-preference tweaks.
 %    \begin{macrocode}
 \bool_if:NTF \g_@@_tweak_shortcuts_bool {
-  \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
-    \cs_set:cpn {vS} {
-      \@@_arrow_overset:w[2mu][8/10]{S}
-    }
-  } {}
-  \prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
-    \cs_new:cpn {vell} {
-      \@@_arrow_overset:w{\ell}
-    }
-    \cs_new:cpn {ellv} {
-      \@@_arrow_overset:w{\ell}
-    }
-  } {}
+    \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
+        \int_step_inline:nnn {1} {26} {
+            \cs_set:cpx {v\int_to_Alph:n{#1}} {
+                \exp_not:N\@@_arrow_overset:w[2.5mu][7/10]{\int_to_Alph:n{#1}}
+            }
+            \cs_set:cpx {\int_to_Alph:n{#1}v} {
+                \exp_not:N\@@_arrow_overset:w*[2.5mu][7/10]{\int_to_Alph:n{#1}}
+            }
+        }
+        \cs_set:cpn {vS} {
+            \@@_arrow_overset:w[3mu][7/10]{S}
+        }
+        \cs_set:cpn {vX} {
+            \@@_arrow_overset:w[3mu][7/10]{X}
+        }
+    } {}
+    \prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
+        \cs_new:cpn {vell} {
+            \@@_arrow_overset:w{\ell}
+        }
+        \cs_new:cpn {ellv} {
+            \@@_arrow_overset:w{\ell}
+        }
+    } {}
 } {}
 %    \end{macrocode}
 % \end{implementation}
