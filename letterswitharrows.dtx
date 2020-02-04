@@ -54,7 +54,7 @@
 
 % \title{The \pkg{letterswitharrows} package}
 % \author{Max Teegen\\ \href{mailto:tex@jmteegen.eu}{tex@jmteegen.eu}}
-% \date{2019/11/21}
+% \date{Released 2020-02-04}
 
 % \maketitle
 
@@ -133,7 +133,7 @@
 
 % \subsection{Other package options}
 % \DescribeOption{pgf}
-% If you specify the \verb|pgf| option, every arrow is drawn as a \verb|pgfpicture|. This requires the \pkg{pgf} package, and slow in its current implementation.
+% If you specify the \verb|pgf| option, every arrow is drawn as a \verb|pgfpicture|. This requires the \pkg{pgf} package.
 % \begin{texnote}
 %   You can set up custom arrow drawing code by redefining \cs{__jmt_lwa_arrow_draw:nnn}.
 %   The command is expected to draw an arrow with its head at the current position. Its length should be \verb|#1| and it should be drawn at a font size of \verb|#2|pt.
@@ -142,7 +142,8 @@
 
 % \DescribeOption{tweaks}
 % Specifying the \verb|tweaks| option applies per-letter scaling adjustments to some of the single-letter shorthands. This is enabled by default.
-% These are specific to Latin Modern Math and subject to be changed on a whim. If you wish a more stable behaviour specify \verb|tweaks=false|
+% These are specific to Latin Modern Math and subject to be changed on a whim. If you wish a more stable behaviour specify \verb|tweaks=false|.
+% This documentation uses \ver|tweaks=false|.
 
 % \end{documentation}
 % \begin{implementation}
@@ -432,12 +433,13 @@
 %    \end{macrocode}
 % \end{macro}
 % Some personal-preference tweaks.
+% \changes{2019/02/04}{2019/02/04}{Tweaks for capital letters.}
 %    \begin{macrocode}
 \bool_if:NTF \g_@@_tweak_shortcuts_bool {
     \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
         \int_step_inline:nnn {1} {26} {
             \cs_set:cpx {v\int_to_Alph:n{#1}} {
-                \exp_not:N\@@_arrow_overset:w[3mu][7/10]{\int_to_Alph:n{#1}}
+                \exp_not:N\@@_arrow_overset:w[2.5mu][8/10]{\int_to_Alph:n{#1}}
             }
             \cs_set:cpx {\int_to_Alph:n{#1}v} {
                 \exp_not:N\@@_arrow_overset:w*[2.5mu][7/10]{\int_to_Alph:n{#1}}
@@ -448,6 +450,16 @@
         }
         \cs_set:cpn {vX} {
             \@@_arrow_overset:w[3mu][7/10]{X}
+        }
+    } {}
+    \prop_if_in:NnTF \g_@@_selected_presets_prop {cAcBcC} {
+        \int_step_inline:nnn {1} {26} {
+            \cs_set:cpx {vc\int_to_Alph:n{#1}} {
+                \exp_not:N\@@_arrow_overset:w[1mu][9/10]{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
+            }
+            \cs_set:cpx {c\int_to_Alph:n{#1}v} {
+                \exp_not:N\@@_arrow_overset:w*[1.5mu][8/10]{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
+            }
         }
     } {}
     \prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
