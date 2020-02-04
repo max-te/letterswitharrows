@@ -1,4 +1,5 @@
 letterswitharrows.sty
+build
 *.pdf
 *.aux
 *.dvi
