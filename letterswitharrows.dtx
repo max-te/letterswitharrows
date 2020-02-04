@@ -62,7 +62,8 @@
 % This package does provides math-mode commands for setting left and right arrows over mathematical symbols, so that the arrows dynamically scale with the symbols.
 % Here is a sample: {\large\[ 
 %   \vs \le \tv \in \vec{U_{\mathrlap\vr}} \qquad \left\vert \vec{AB} \right\vert = \left\vert \cev{AB} \right\vert \qquad A \mathrel{\arrowoverset*[-2mu]{\between}} B
-% \]} % Somehow embellishments don't work in the documentation!?
+% \]}
+% \iffalse Somehow embellishments don't work in the documentation!? \fi
 % While it is possible to set arrows over longer strings of symbols, the focus lies on single characters.
 %
 % Only \textsc{pdf} output is supported. Output to \textsc{ps} is implemented, but rarely tested.
@@ -436,7 +437,7 @@
     \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
         \int_step_inline:nnn {1} {26} {
             \cs_set:cpx {v\int_to_Alph:n{#1}} {
-                \exp_not:N\@@_arrow_overset:w[2.5mu][7/10]{\int_to_Alph:n{#1}}
+                \exp_not:N\@@_arrow_overset:w[3mu][7/10]{\int_to_Alph:n{#1}}
             }
             \cs_set:cpx {\int_to_Alph:n{#1}v} {
                 \exp_not:N\@@_arrow_overset:w*[2.5mu][7/10]{\int_to_Alph:n{#1}}
