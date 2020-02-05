@@ -287,10 +287,15 @@
 % \end{macro}
 
 % \begin{macro}{\@@_arrow_overset:w,\arrowoverset}
+% \changes{2019/02/04}{2019/02/04}{Subscript spacing adjustments}
 %    \begin{macrocode}
 \cs_new_protected:Npn \@@_arrow_overset:w {
   \c_group_begin_token
   \__@@_arrow_overset_aux:w
+}
+
+\cs_new:Nn \__jmt_lwa_bool_convert:n {
+    \IfBooleanTF {#1} {\c_true_bool} {\c_false_bool}
 }
 
 % This exp_args is necessary because _ generates the wrong token in expl3 syntax
@@ -299,8 +304,10 @@
   \__@@_arrow_overset:nnnnn 
     {
       #5
-      \c_math_superscript_token {
-        \scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}
+      \exp_args:Nf\bool_if:nT{\__jmt_lwa_bool_convert:n{#6} || \__jmt_lwa_bool_convert:n{#8}} {
+          \c_math_superscript_token {
+            \scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}
+        }
       } % TODO: Better positioning etc?
       \exp_args:Nf\IfValueT{\use:n#7} {
         \c_math_subscript_token {
@@ -313,7 +320,7 @@
 
   \exp_args:Nf\IfValueTF{\use:n#7}{ 
     % TODO: Better way to do this? This is all kinds of wrong.
-    \hphantom{\!\c_math_subscript_token{#7}}
+    \hphantom{\c_math_subscript_token{#7}}
   } {}
   \c_group_end_token
 }
