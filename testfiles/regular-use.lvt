@@ -1,16 +1,27 @@
+\input{regression-test.tex}
 \documentclass[10pt]{scrartcl}
 \usepackage{amssymb,amsmath,expl3}
 \usepackage[unicode]{hyperref}
 \usepackage[tweaks]{letterswitharrows}
 
 \begin{document}
-\section{Where the $\vh$ things are}
-\makeatletter
-\setlength{\fboxsep}{0pt}
+\section{Test}
+$123abc$
+\START
+\BEGINTEST{section}
+    \section{Where the $\vh$ things are}
+\ENDTEST
+
+\BEGINTEST{generaluse}
 $
     \vb\lor\vr\lor V_\vt \quad \rv < \vs_1 \le \vs_2 \le \vs \le \vleft_' \quad \vcU_{\vright_\tv} \ni \vS_k \subseteq \vU \quad \vX
 $
+\[
+    \vU', \vS', \vS_3, \vS_3'
+\]
+\ENDTEST
 
+\BEGINTEST{alphabet}
 \[
     \vA,\vB,\vC,\vD,\vE,\vF,\vG,\vH,
 \]\[
@@ -25,4 +36,6 @@ $
 \]\[
     \Qv,\Rv,\Sv,\Tv,\Uv,\Vv,\Wv,\Xv,\Yv,\Zv
 \]
+\ENDTEST
+\END
 \end{document}

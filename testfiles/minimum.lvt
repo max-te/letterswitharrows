@@ -1,0 +1,6 @@
+\input{regression-test.tex}
+\documentclass{minimal}
+\usepackage{expl3}
+\START
+\usepackage{letterswitharrows}
+\END
