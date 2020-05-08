@@ -54,7 +54,7 @@
 
 % \title{The \pkg{letterswitharrows} package}
 % \author{Max Teegen\\ \href{mailto:tex@jmteegen.eu}{tex@jmteegen.eu}}
-% \date{Released 2020-02-04}
+% \date{Released 2020-05-08}
 
 % \maketitle
 
@@ -244,6 +244,7 @@
 % \end{macro}
 
 % The core functions.
+% \changes{2020/05/08}{2020/05/08}{Reset tabskip. Fixes spacing in aligned environments}
 % \begin{macro}{\__@@_arrow_overset_style:Nnncnnn,\__@@_arrow_overset:nnnnn}
 %    \begin{macrocode}
 \cs_new:Npn \__@@_arrow_overset_style:Nnncnnn #1#2#3#4#5#6#7 {
@@ -252,6 +253,7 @@
   \vbox:n {
     \tex_lineskiplimit:D = \maxdimen
     \tex_baselineskip:D = 0pt
+    \tex_tabskip:D = 0pt
     \tex_lineskip:D = \dim_eval:n {\l_tmpa_dim * 3/2 + #7}
     \tex_halign:D { ## \tex_cr:D
       \skip_horizontal:n {\l_tmpa_dim / 2}
