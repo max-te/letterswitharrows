@@ -175,7 +175,7 @@
       q~
       1~J~1~j~
       1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~cm~
-      .3~w~
+      \fp_use:c{g__jmt_lwa_line_width}~w~
       q~
       \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~cm~
       1~0~0~1~-1~0~cm~
@@ -193,7 +193,7 @@
     \tex_special:D {"~
       1~setlinecap~1~setlinejoin~
       1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~6~array~astore~concat~
-      .3~setlinewidth~
+      \fp_use:c{g__jmt_lwa_line_width}~setlinewidth~
       gsave~
       \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~6~array~astore~concat~
       1~0~0~1~-1~0~6~array~astore~concat~
@@ -372,6 +372,8 @@
   presets .initial:n = {abc, ABC, cAcBcC},
   tweaks .bool_set:N = \g_@@_tweak_shortcuts_bool,
   tweaks .initial:n = {true},
+  linewidth .fp_set:N = \g__jmt_lwa_line_width,
+  linewidth .initial:n = {.3},
 }
 \ProcessKeysPackageOptions{letterswitharrows}
 %    \end{macrocode}
