@@ -220,7 +220,7 @@
 
 \cs_new:Nn \__@@_arrow_draw_pgf:nnn {
   \begin{pgfpicture}
-    \pgfsetlinewidth{#2pt/30}
+    \pgfsetlinewidth{#2pt*\fp_use:c{g_@@_line_width}/10}
     \pgfsetarrowsstart
       {Computer~Modern~Rightarrow[width=#2pt*2/10,length=#2pt/10,sharp]}
     % \pgfsetarrowsstart{\tl_use:N \g_@@_pgf_arrow_style_tl}
