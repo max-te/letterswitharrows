@@ -54,7 +54,7 @@
 
 % \title{The \pkg{letterswitharrows} package}
 % \author{Max Teegen\\ \href{mailto:tex@jmteegen.eu}{tex@jmteegen.eu}}
-% \date{Released 2020-05-08}
+% \date{Released 2021-07-19}
 
 % \maketitle
 
@@ -153,7 +153,7 @@
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \RequirePackage{expl3}
-\ProvidesExplPackage {letterswitharrows} {2020-02-04} {} {Draw arrows over math letters.}
+\ProvidesExplPackage {letterswitharrows} {2021/07/19} {} {Draw arrows over math letters.}
 \RequirePackage{xparse,l3keys2e,mathtools}
 % TODO: I just use mathtools for mathrlap; replace.
 
@@ -166,6 +166,7 @@
 }
 %    \end{macrocode}
 % The drawing code.
+% \changes{2021/07/10}{2021/07/19}{Implement adjustable linewidth.}
 % \begin{macro}{\__@@_arrow_draw_special:nnn,\__@@_arrow_draw_pgf:nnn,\__@@_arrow_left:nn,\__@@_arrow_right:nn}
 %    \begin{macrocode}
 \cs_new:Nn \__@@_arrow_draw_special:nnn % length, font size, sign
@@ -175,7 +176,7 @@
       q~
       1~J~1~j~
       1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~cm~
-      \fp_use:c{g__jmt_lwa_line_width}~w~
+      \fp_use:c{g_@@_line_width}~w~
       q~
       \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~cm~
       1~0~0~1~-1~0~cm~
@@ -188,7 +189,7 @@
       q~
       0~0~m~
       -1~0~0~1~0~0~cm~
-      \fp_use:c{g__jmt_lwa_line_width}~w~
+      \fp_use:c{g_@@_line_width}~w~
       \dim_to_decimal:n{#3#1}~0~l~S~
       Q
     }
@@ -196,7 +197,7 @@
     \tex_special:D {"~
       1~setlinecap~1~setlinejoin~
       1~0~0~\dim_to_decimal:n{#3#2pt/10}~0~0~6~array~astore~concat~
-      \fp_use:c{g__jmt_lwa_line_width}~setlinewidth~
+      \fp_use:c{g_@@_line_width}~setlinewidth~
       gsave~
       \dim_to_decimal:n{#3#2pt/10}~0~0~1~0~0~6~array~astore~concat~
       1~0~0~1~-1~0~6~array~astore~concat~
@@ -375,7 +376,7 @@
   presets .initial:n = {abc, ABC, cAcBcC},
   tweaks .bool_set:N = \g_@@_tweak_shortcuts_bool,
   tweaks .initial:n = {true},
-  linewidth .fp_set:N = \g__jmt_lwa_line_width,
+  linewidth .fp_set:N = \g_@@_line_width,
   linewidth .initial:n = {.3},
 }
 \ProcessKeysPackageOptions{letterswitharrows}
