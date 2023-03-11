@@ -61,7 +61,7 @@
 % \begin{documentation}
 % This package provides math-mode commands for setting left and right arrows over mathematical symbols, so that the arrows dynamically scale with the symbols.
 % Here is a sample: {\large\[ 
-%   \vs \le \tv \in \vec{U_{\mathrlap\vr}} \qquad \left\vert \vec{AB} \right\vert = \left\vert \cev{AB} \right\vert \qquad A \mathrel{\arrowoverset*[-2mu]{\between}} B
+%   \vs \le \tv \in \vec{U_{\mathrlap\vrv}} \qquad \left\vert \vec{AB} \right\vert = \left\vert \cev{AB} \right\vert \qquad A \mathrel{\arrowoverset*[-2mu]{\between}} B
 % \]}
 % \iffalse Somehow embellishments don't work in the documentation!? \fi
 % While it is possible to set arrows over longer strings of symbols, the focus lies on single characters.
@@ -81,40 +81,40 @@
 % By default, the \verb|abc|, \verb|ABC| and \verb|cAcBcC| presets are loaded.
 
 % \DescribeOption{abc}
-%   Passing \verb|abc| to the \verb|presets| option allows you to use the \tn{v\meta{char}} and \tn{\meta{char}v} commands for all the lower-case letters \verb|a| through \verb|z| except for \verb|v|.
-% \begin{function}{\v<char>,\<char>v,\vleft,\vright}
+%   Passing \verb|abc| to the \verb|presets| option allows you to use the \tn{v\meta{char}}, \tn{\meta{char}v}, and \tn{v\meta{char}v} commands for all the lower-case letters \verb|a| through \verb|z| except for \verb|v|.
+% \begin{function}{\v<char>,\<char>v,\vleft,\vright,\v<char>v}
 %   For the letter \verb|v| the commands \tn{vleft} and \tn{vright} are provided.
-%    \[ \va, \vb, \vc, \dv, \mv, F_\tv \]
+%    \[ \va, \vb, \vc, \dv, \vmv, F_\tv \]
 % \begin{verbatim}
-%    \[ \va, \vb, \vc, \dv, \mv, F_\tv \]
+%    \[ \va, \vb, \vc, \dv, \vmv, F_\tv \]
 % \end{verbatim}
 % \end{function}
 
 % \DescribeOption{ABC}
-%   Passing \verb|ABC| to the \verb|presets| option allows you to use the \tn{v\meta{CHAR}} and \tn{\meta{CHAR}v} commands for all the upper-case letters \verb|A| through \verb|Z|.
+%   Passing \verb|ABC| to the \verb|presets| option allows you to use the \tn{v\meta{CHAR}}, \tn{\meta{CHAR}v}, and \tn{v\meta{CHAR}v} commands for all the upper-case letters \verb|A| through \verb|Z|.
 % \begin{function}{\v<CHAR>,\<CHAR>v}
-%    \[ \vA, \vB, \vC, \Dv, \Ev, F_\Gv \]
+%    \[ \vA, \vB, \vC, \Dv, \vEv, F_\Gv \]
 % \begin{verbatim}
-%   \[ \vA, \vB, \vC, \Dv, \Ev, F_\Gv \]
+%   \[ \vA, \vB, \vC, \Dv, \vEv, F_\Gv \]
 % \end{verbatim}
 % \end{function}
 
 % \DescribeOption{cAcBcC}
-%   Passing \verb|cAcBcC| to the \verb|presets| option allows you to use the \tn{vc\meta{CHAR}} and \tn{c\meta{CHAR}v} commands for all the upper-case letters \verb|A| through \verb|Z| to set arrows over \tn{mathcal}-letters.
+%   Passing \verb|cAcBcC| to the \verb|presets| option allows you to use the \tn{vc\meta{CHAR}}, \tn{c\meta{CHAR}v}, and \tn{vc\meta{CHAR}v} commands for all the upper-case letters \verb|A| through \verb|Z| to set arrows over \tn{mathcal}-letters.
 % \begin{function}{\vc<CHAR>,\c<CHAR>v}
-%    \[ \vcA, \vcB, \vcC, \cDv, \cEv, F_\cGv \]
+%    \[ \vcA, \vcB, \vcC, \cDv, \vcEv, F_\cGv \]
 % \begin{verbatim}
-%   \[ \vcA, \vcB, \vcC, \cDv, \cEv, F_\cGv \]
+%   \[ \vcA, \vcB, \vcC, \cDv, \vcEv, F_\cGv \]
 % \end{verbatim}
 % \end{function}
 
 % \DescribeOption{vec-cev}
-%   Passing \verb|vec-cev| to the \verb|presets| option (re)defines the \tn{vec} and \tn{cev} commands.
+%   Passing \verb|vec-cev| to the \verb|presets| option (re)defines the \tn{vec}, \tn{cev}, and  \tn{vecev} commands.
 % \begin{function}{\vec,\cev}
 %   Unlike the other commands these do not automatically consume subsequent subscripts or \verb|'| tokens.
-%   \[ \vec{\mathbf{x}} := \cev{AB} \qquad \langle \vw, \vright \rangle = 42 \]
+%   \[ \vec{\mathbf{x}} := \cev{AB}\]
 % \begin{verbatim}
-%   \[ \vec{\mathbf{x}} := \cev{AB} \qquad \langle \vw, \vright \rangle = 42 \]
+%   \[ \vec{\mathbf{x}} := \cev{AB}\]
 % \end{verbatim}
 % \end{function}
 
@@ -134,6 +134,7 @@
 % \subsection{Other package options}
 % \DescribeOption{pgf}
 % If you specify the \verb|pgf| option, every arrow is drawn as a \verb|pgfpicture|. This requires the \pkg{pgf} package.
+% Double arrows are not implemented in pgf mode.
 % \begin{texnote}
 %   You can set up custom arrow drawing code by redefining \cs{__jmt_lwa_arrow_draw:nnn}.
 %   The command is expected to draw an arrow with its head at the current position. Its length should be \verb|#1| and it should be drawn at a font size of \verb|#2|pt.
@@ -172,7 +173,7 @@
 %    \end{macrocode}
 % The drawing code.
 % \changes{2021/07/10}{2021/07/19}{Implement adjustable linewidth.}
-% \begin{macro}{\__@@_arrow_draw_special:nnn,\__@@_arrow_draw_pgf:nnn,\__@@_arrow_left:nn,\__@@_arrow_right:nn}
+% \begin{macro}{\__@@_arrow_draw_special:nnn,\__@@_arrow_draw_double:nn,\__@@_arrow_draw_pgf:nnn,\__@@_arrow_left:nn,\__@@_arrow_right:nn,\__@@_arrow_double:nn}
 %    \begin{macrocode}
 \cs_new:Nn \__@@_arrow_draw_special:nnn % length, font size, sign
 {
@@ -218,6 +219,7 @@
   }
 }
 
+
 % TODO
 % \tl_new:N \g_@@_pgf_arrow_style_tl
 % \tl_set:Nn \g_@@_pgf_arrow_style_tl 
@@ -238,17 +240,51 @@
 
 \cs_new_eq:NN \__@@_arrow_draw:nnn \use_none:nnn
 
+
+\cs_new:Nn \__@@_arrow_draw_double:nn
+{
+    \tex_special:D {pdf:~
+        q~
+        1~J~1~j~
+        1~0~0~\dim_to_decimal:n{#2pt/10}~0~0~cm~
+        \fp_use:N\g__jmt_lwa_line_width~w~
+        q~
+        \dim_to_decimal:n{#2pt/10}~0~0~1~0~0~cm~
+        1~0~0~1~-1~0~cm~
+        0~1~m~
+        .25~0~1~0~1~0~c~
+        1~0~.25~0~0~-1~c~
+        S~
+        Q~
+        0~0~m~
+        -1~0~0~1~0~0~cm~
+        \dim_to_decimal:n{#1}~0~l~S~
+        \dim_to_decimal:n{#2pt/10}~0~0~1~\dim_to_decimal:n{#1}~0~cm~
+        1~0~0~1~-1~0~cm~
+        0~1~m~
+        .25~0~1~0~1~0~c~
+        1~0~.25~0~0~-1~c~
+        S~
+        Q
+    }
+}
+
+
 \cs_new:Nn \__@@_arrow_right:nn {
   \skip_horizontal:n {#1}
-  % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
   \__@@_arrow_draw:nnn {#1} {#2} {}
 }
 
 \cs_new:Nn \__@@_arrow_left:nn {
   \__@@_arrow_draw:nnn {#1} {#2} {-}
   \skip_horizontal:n {#1}
-  % \rule[\dimexpr -#2pt/6\relax]{#1}{\dimexpr #2pt/3\relax}
 }
+
+\cs_new:Nn \__@@_arrow_double:nn {
+  \skip_horizontal:n {#1}
+  \__@@_arrow_draw_double:nn {#1} {#2}
+}
+
 %    \end{macrocode}
 % \end{macro}
 
@@ -311,27 +347,27 @@
 
 % This exp_args is necessary because _ generates the wrong token in expl3 syntax
 \exp_args:NNx \NewDocumentCommand \__@@_arrow_overset_aux:w
-  {s O{0mu} O{1} O{0ex} m t' e{\char_generate:nn {95}{8}} t'} {
+  {s s O{0mu} O{1} O{0ex} m t' e{\char_generate:nn {95}{8}} t'} {
   \__@@_arrow_overset:nnnnn 
     {
-      #5
-      \exp_args:Nf\bool_if:nT{\__jmt_lwa_bool_convert:n{#6} || \__jmt_lwa_bool_convert:n{#8}} {
+      #6
+      \exp_args:Nf\bool_if:nT{\__jmt_lwa_bool_convert:n{#7} || \__jmt_lwa_bool_convert:n{#9}} {
           \c_math_superscript_token {
-            \scriptscriptstyle\IfBooleanT{#6}{\prime}\IfBooleanT{#8}{\prime}
+            \scriptscriptstyle\IfBooleanT{#7}{\prime}\IfBooleanT{#9}{\prime}
         }
       } % TODO: Better positioning etc?
-      \exp_args:Nf\IfValueT{\use:n#7} {
+      \exp_args:Nf\IfValueT{\use:n#8} {
         \c_math_subscript_token {
-          \mathrlap{#7}
+          \mathrlap{#8}
         }
       }
     }
-    {\IfBooleanTF{#1}{left}{right}}
-    {#2} {#3} {#4}
+    {\IfBooleanTF{#1}{\IfBooleanTF{#2}{double}{left}}{right}}
+    {#3} {#4} {#5}
 
-  \exp_args:Nf\IfValueTF{\use:n#7}{ 
+  \exp_args:Nf\IfValueTF{\use:n#8}{ 
     % TODO: Better way to do this? This is all kinds of wrong.
-    \hphantom{\c_math_subscript_token{#7}}
+    \hphantom{\c_math_subscript_token{#8}}
   } {}
   \c_group_end_token
 }
@@ -389,7 +425,7 @@
 % \end{macro}
 % \end{variable}
 
-% \begin{macro}{\v<char>,\<char>v,\vleft,\vright}
+% \begin{macro}{\v<char>,\<char>v,\vleft,\vright,\v<char>v}
 %    \begin{macrocode}
 \prop_if_in:NnTF \g_@@_selected_presets_prop {abc} {
   \int_step_inline:nnn {1} {26} {
@@ -400,6 +436,9 @@
       \cs_new:cpx {vleft} {
         \exp_not:N\@@_arrow_overset:w*{v}
       }
+      \cs_new:cpx {vvv} {
+        \exp_not:N\@@_arrow_overset:w**{v}
+      }
     } {
       \cs_new:cpx {v\int_to_alph:n{#1}} {
         \exp_not:N\@@_arrow_overset:w{\int_to_alph:n{#1}}
@@ -407,12 +446,15 @@
       \cs_new:cpx {\int_to_alph:n{#1}v} {
         \exp_not:N\@@_arrow_overset:w*{\int_to_alph:n{#1}}
       }
+      \cs_new:cpx {v\int_to_alph:n{#1}v} {
+        \exp_not:N\@@_arrow_overset:w**{\int_to_alph:n{#1}}
+      }
     }
   }
 } {}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\v<CHAR>,\<CHAR>v}
+% \begin{macro}{\v<CHAR>,\<CHAR>v,\v<CHAR>v}
 %    \begin{macrocode}
 \prop_if_in:NnTF \g_@@_selected_presets_prop {ABC} {
   \int_step_inline:nnn {1} {26} {
@@ -422,11 +464,14 @@
     \cs_new:cpx {\int_to_Alph:n{#1}v} {
       \exp_not:N\@@_arrow_overset:w*{\int_to_Alph:n{#1}}
     }
+    \cs_new:cpx {v\int_to_Alph:n{#1}v} {
+      \exp_not:N\@@_arrow_overset:w**{\int_to_Alph:n{#1}}
+    }
   }
 } {}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\vc<CHAR>,\c<CHAR>v}
+% \begin{macro}{\vc<CHAR>,\c<CHAR>v,\vc<CHAR>v}
 %    \begin{macrocode}
 \prop_if_in:NnTF \g_@@_selected_presets_prop {cAcBcC} {
   \int_step_inline:nnn {1} {26} {
@@ -436,11 +481,14 @@
     \cs_new:cpx {c\int_to_Alph:n{#1}v} {
       \exp_not:N\@@_arrow_overset:w*{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
     }
+    \cs_new:cpx {vc\int_to_Alph:n{#1}v} {
+      \exp_not:N\@@_arrow_overset:w**{\exp_not:N\mathcal{\int_to_Alph:n{#1}}}
+    }
   }
 } {}
 %    \end{macrocode}
 % \end{macro}
-% \begin{macro}{\vec,\cev}
+% \begin{macro}{\vec,\cev,\vecev}
 %    \begin{macrocode}
 \prop_if_in:NnTF \g_@@_selected_presets_prop {vec-cev} {
   \RenewDocumentCommand \vec {m} {
@@ -448,6 +496,9 @@
   }
   \DeclareDocumentCommand \cev {m} {
     \@@_arrow_overset:w* {#1} \scan_stop:
+  }
+  \DeclareDocumentCommand \vecev {m} {
+    \@@_arrow_overset:w** {#1} \scan_stop:
   }
 } {}
 %    \end{macrocode}
@@ -464,27 +515,36 @@
             \cs_set:cpx {\int_to_Alph:n{#1}v} {
                 \exp_not:N\@@_arrow_overset:w*[2.5mu][7/10]{\int_to_Alph:n{#1}}
             }
+            \cs_set:cpx {v\int_to_Alph:n{#1}v} {
+                \exp_not:N\@@_arrow_overset:w**[1.5mu][9/10]{\int_to_Alph:n{#1}}
+            }
         }
         \cs_set:cpn {vS} {
             \@@_arrow_overset:w[3mu][7/10]{S}
         }
+        \cs_set:cpn {vSv} {
+            \@@_arrow_overset:w**[2mu][9/10]{S}
+        }
         \cs_set:cpn {vT} {
-            \__jmt_lwa_arrow_overset:w[2mu][8/10]{T}
+            \@@_arrow_overset:w[2mu][8/10]{T}
         }
         \cs_set:cpn {Tv} {
-            \__jmt_lwa_arrow_overset:w*[1mu][8/10]{T}
+            \@@_arrow_overset:w*[1mu][8/10]{T}
         }
         \cs_set:cpn {vU} {
-            \__jmt_lwa_arrow_overset:w[2mu][7/10]{U}
+            \@@_arrow_overset:w[2mu][7/10]{U}
         }
         \cs_set:cpn {Uv} {
-            \__jmt_lwa_arrow_overset:w*[2mu][7/10]{U}
+            \@@_arrow_overset:w*[2mu][7/10]{U}
+        }
+        \cs_set:cpn {vUv} {
+            \@@_arrow_overset:w**[1.5mu][8/10]{U}
         }
         \cs_set:cpn {vV} {
-            \__jmt_lwa_arrow_overset:w[2.5mu][7/10]{V}
+            \@@_arrow_overset:w[2.5mu][7/10]{V}
         }
         \cs_set:cpn {Vv} {
-            \__jmt_lwa_arrow_overset:w*[2mu][7/10]{V}
+            \@@_arrow_overset:w*[2mu][7/10]{V}
         }
         \cs_set:cpn {vX} {
             \@@_arrow_overset:w[3mu][7/10]{X}
@@ -493,7 +553,7 @@
             \@@_arrow_overset:w[2mu][8/10]{Y}
         }
         \cs_set:cpn {Yv} {
-            \__jmt_lwa_arrow_overset:w*[2mu][7/10]{Y}
+            \@@_arrow_overset:w*[2mu][7/10]{Y}
         }
     } {}
     \prop_if_in:NnTF \g_@@_selected_presets_prop {cAcBcC} {
@@ -511,7 +571,10 @@
             \@@_arrow_overset:w{\ell}
         }
         \cs_new:cpn {ellv} {
-            \@@_arrow_overset:w{\ell}
+            \@@_arrow_overset:w*{\ell}
+        }
+        \cs_new:cpn {vellv} {
+            \@@_arrow_overset:w**{\ell}
         }
     } {}
 } {}
