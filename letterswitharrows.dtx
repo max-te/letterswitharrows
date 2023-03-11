@@ -247,7 +247,7 @@
         q~
         1~J~1~j~
         1~0~0~\dim_to_decimal:n{#2pt/10}~0~0~cm~
-        \fp_use:N\g__jmt_lwa_line_width~w~
+        \fp_use:N\g__@@_line_width~w~
         q~
         \dim_to_decimal:n{#2pt/10}~0~0~1~0~0~cm~
         1~0~0~1~-1~0~cm~
@@ -341,7 +341,7 @@
   \__@@_arrow_overset_aux:w
 }
 
-\cs_new:Nn \__jmt_lwa_bool_convert:n {
+\cs_new:Nn \__@@_bool_convert:n {
     \IfBooleanTF {#1} {\c_true_bool} {\c_false_bool}
 }
 
@@ -351,7 +351,7 @@
   \__@@_arrow_overset:nnnnn 
     {
       #6
-      \exp_args:Nf\bool_if:nT{\__jmt_lwa_bool_convert:n{#7} || \__jmt_lwa_bool_convert:n{#9}} {
+      \exp_args:Nf\bool_if:nT{\__@@_bool_convert:n{#7} || \__@@_bool_convert:n{#9}} {
           \c_math_superscript_token {
             \scriptscriptstyle\IfBooleanT{#7}{\prime}\IfBooleanT{#9}{\prime}
         }
