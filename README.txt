@@ -1,5 +1,5 @@
 The letterswitharrows package
-Copyright 2019-2021 J. M. Teegen
+Copyright 2019-2024 J. M. Teegen
 
 The letterswitharrows package provides LaTeX math-mode commands for setting left and right arrows over mathematical symbols, so that the arrows dynamically scale with the symbols.
 While it is possible to set arrows over longer strings of symbols, the focus lies on single characters.
